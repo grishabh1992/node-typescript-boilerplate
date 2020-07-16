@@ -8,6 +8,7 @@ class App {
   constructor () {
     this.express = express();
     this.mountRoutes();
+    
   }
 
   private mountRoutes (): void {
@@ -17,4 +18,3 @@ class App {
 }
 
 module.exports = new App().express;
-// export default new App().express
