@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import { UserRepository } from "../repositories/user.repository";
+import { CumtomResponse } from "../config/response";
 
 export class UerController {
     userRepository: UserRepository;
@@ -8,13 +9,24 @@ export class UerController {
     }
 
     getRecord = async (request: Request, response: Response, next: NextFunction) => {
-        const users = await this.userRepository.retrieve({}, {}, {});
-        console.log(users);
-        response.send(users);
+        try {
+            const users = await this.userRepository.retrieve({}, {}, {});
+            response.send(users);
+        } catch (error) {
+            throw error;
+        }
     }
 
-    joinMe = async (request: Request, response: Response, next: NextFunction) => {
-        const user = await this.userRepository.updateWithoutSet({ username: request.body.username }, request.body, { upsert: true });
-        response.send(request.body);
+    getSingleRecord = async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const users = await this.userRepository.retrieve({ _id: request.params.id }, {}, {});
+            if (users.length) {
+                throw CumtomResponse.badRequest({}, 'Wrong Id');
+            }
+            response.send(users);
+        } catch (error) {
+            throw error;
+        }
     }
+
 }

@@ -10,7 +10,7 @@ export class UserRoutes {
     }
     get routes() {
         this.router.get('/', asyncHandler(this.controller.getRecord));
-        this.router.put('/', asyncHandler(this.controller.joinMe));
+        this.router.get('/:id', asyncHandler(this.controller.getSingleRecord));
         return this.router;
     }
 }
